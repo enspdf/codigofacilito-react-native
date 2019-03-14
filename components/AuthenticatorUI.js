@@ -1,44 +1,78 @@
-import React from "react";
+import React, { Component } from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 import { TextInput, Button, Title, withTheme } from "react-native-paper";
 import styles from "../stylesheets/login.stylesheet";
 
-let AuthenticatorUI = props => {
-  return (
-    <View style={styles.container}>
-      <Title style={styles.title}>Ingresar a tu cuenta.</Title>
-      <TextInput
-        style={styles.formControl}
-        label="Correo electrónico"
-        onChangeText={text => props.setEmail(text)}
-      />
+class AuthenticatorUI extends Component {
+  constructor(props) {
+    super(props);
 
-      <TextInput
-        style={styles.formControl}
-        label="Contraseña"
-        onChangeText={text => props.setPassword(text)}
-      />
+    this.state = {
+      email: "",
+      password: ""
+    };
+  }
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          ...styles.formControl
-        }}
-      >
-        <TouchableHighlight>
-          <Button onPress={() => props.mainAction()} mode="contained">
-            {props.mainButtonTitle}
-          </Button>
-        </TouchableHighlight>
-        <TouchableHighlight>
-          <Button onPress={() => props.navigationAction()}>
-            {props.secondaryButtonTitle}
-          </Button>
-        </TouchableHighlight>
+  setEmail = email => {
+    this.setState({
+      email
+    });
+  };
+
+  setPassword = password => {
+    this.setState({
+      password
+    });
+  };
+
+  render() {
+    let props = this.props;
+    return (
+      <View style={styles.container}>
+        <Title style={styles.title}>Ingresar a tu cuenta.</Title>
+        <TextInput
+          style={styles.formControl}
+          label="Correo electrónico"
+          value={this.state.email}
+          onChangeText={text => this.setEmail(text)}
+        />
+
+        <TextInput
+          style={styles.formControl}
+          label="Contraseña"
+          value={this.state.password}
+          onChangeText={text => this.setPassword(text)}
+        />
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            ...styles.formControl
+          }}
+        >
+          <TouchableHighlight>
+            <Button
+              onPress={() =>
+                props.mainAction({
+                  email: this.state.email,
+                  password: this.state.password
+                })
+              }
+              mode="contained"
+            >
+              {props.mainButtonTitle}
+            </Button>
+          </TouchableHighlight>
+          <TouchableHighlight>
+            <Button onPress={() => props.navigationAction()}>
+              {props.secondaryButtonTitle}
+            </Button>
+          </TouchableHighlight>
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+}
 
 export default withTheme(AuthenticatorUI);

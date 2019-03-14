@@ -34,6 +34,8 @@ class AuthenticatorUI extends Component {
           style={styles.formControl}
           label="Correo electrónico"
           value={this.state.email}
+          textContentType="emailAddress"
+          keyboardType="email-address"
           onChangeText={text => this.setEmail(text)}
         />
 
@@ -41,6 +43,8 @@ class AuthenticatorUI extends Component {
           style={styles.formControl}
           label="Contraseña"
           value={this.state.password}
+          textContentType="password"
+          secureTextEntry={true}
           onChangeText={text => this.setPassword(text)}
         />
 

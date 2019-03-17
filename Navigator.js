@@ -8,39 +8,37 @@ import SignUpScreen from "./screens/SignUpScreen";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import AuthLoading from "./screens/AuthLoading";
+import AddEventScreen from "./screens/events/AddEventScreen";
+import EventScreen from "./screens/events/EventScreen";
 
-const AuthNavigator = createStackNavigator(
-  {
-    SignUp: SignUpScreen,
-    Login: LoginScreen
-  },
-  {
-    initialRouteName: "SignUp"
-  }
-);
+const AuthNavigator = createStackNavigator({
+  SignUp: SignUpScreen,
+  Login: LoginScreen
+}, {
+  initialRouteName: "SignUp"
+});
 
-const AppNavigator = createStackNavigator(
-  {
-    Home: HomeScreen
+const AppNavigator = createStackNavigator({
+  Home: HomeScreen,
+  AddEvent: AddEventScreen,
+  Event: EventScreen
+}, {
+  defaultNavigationOptions: ({
+    navigation
+  }) => {
+    return {
+      title: "Intercambios 🎁"
+    };
   },
-  {
-    defaultNavigationOptions: ({ navigation }) => {
-      return {
-        title: "Intercambios 🎁"
-      };
-    }
-  }
-);
+  initialRouteName: "Home"
+});
 
 export default createAppContainer(
-  createSwitchNavigator(
-    {
-      Auth: AuthNavigator,
-      App: AppNavigator,
-      AuthLoading
-    },
-    {
-      initialRouteName: "AuthLoading"
-    }
-  )
+  createSwitchNavigator({
+    Auth: AuthNavigator,
+    App: AppNavigator,
+    AuthLoading
+  }, {
+    initialRouteName: "AuthLoading"
+  })
 );

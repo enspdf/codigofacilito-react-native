@@ -7,17 +7,22 @@ import { login } from "../actions/users";
 class SignUpScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.db = firebase.firestore();
   }
 
   createUser = async ({ email, password }) => {
     try {
-      let response = firebase
+      let response = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
       let { user } = response;
 
-      this.props.login(user);
-      console.log(user);
+      await this.db
+        .collection("users")
+        .doc(user.uid)
+        .set({
+          email: user.email
+        });
     } catch (err) {
       console.log(err);
     }

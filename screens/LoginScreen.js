@@ -25,7 +25,6 @@ class LoginScreen extends Component {
       let { user } = response;
 
       this.props.login(user);
-      console.log(user);
     } catch (err) {
       console.log(err);
     }

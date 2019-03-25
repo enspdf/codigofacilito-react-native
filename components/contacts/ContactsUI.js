@@ -11,7 +11,12 @@ export default props => {
       <FlatList
         ListEmptyComponent={Empty}
         data={props.contacts}
-        renderItem={({ item }) => <ContactCard user={item} />}
+        renderItem={({ item }) => (
+          <ContactCard
+            addContactToEvent={props.addContactToEvent}
+            user={item}
+          />
+        )}
       />
     </View>
   );

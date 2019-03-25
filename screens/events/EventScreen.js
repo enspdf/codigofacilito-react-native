@@ -6,13 +6,13 @@ export default class EventScreen extends Component {
     this.eventId = this.props.navigation.getParam("eventId");
   }
 
+  openContactsScreen = () => {
+    this.props.navigation.navigate("ContactsScreen", {
+      eventId: this.eventId
+    });
+  };
+
   render() {
-    return (
-      <EventUI
-        openContactsScreen={() =>
-          this.props.navigation.navigate("ContactsScreen")
-        }
-      />
-    );
+    return <EventUI openContactsScreen={() => this.openContactsScreen()} />;
   }
 }

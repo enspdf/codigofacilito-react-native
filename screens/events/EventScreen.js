@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import EventUI from "../../components/events/EventUI";
 import firebase from "react-native-firebase";
+import arrayShuffle from "array-shuffle";
 
 export default class EventScreen extends Component {
   constructor(props) {
@@ -14,9 +15,7 @@ export default class EventScreen extends Component {
 
   componentDidMount() {
     this.eventId = this.props.navigation.getParam("eventId");
-
     this.db = firebase.firestore();
-
     this.findEventOnFirebase();
   }
 
@@ -30,10 +29,40 @@ export default class EventScreen extends Component {
     eventRef.collection("contacts").onSnapshot(querySnapshot => {
       querySnapshot.docChanges.forEach(change => {
         if (change.type == "added") {
-          this.addContact({ id: change.doc.id, ...change.doc.data() });
+          this.addContact({ uid: change.doc.id, ...change.doc.data() });
         }
       });
     });
+  };
+
+  shuffleUsers = async () => {
+    let contactsRandom = arrayShuffle(this.state.contacts);
+
+    for (let i = 0; i < contactsRandom.length; i++) {
+      let currentUser = contactsRandom[i];
+      let nextUser;
+
+      if (i === contactsRandom.length - 1) {
+        nextUser = contactsRandom[0];
+      } else {
+        nextUser = contactsRandom[i + 1];
+      }
+
+      await firebase
+        .firestore()
+        .collection("events")
+        .doc(this.eventId)
+        .collection("contacts")
+        .doc(currentUser.uid)
+        .update({
+          friend: {
+            name: nextUser.name,
+            avatar: nextUser.avatar
+          }
+        });
+    }
+
+    return true;
   };
 
   addContact = contact => {
@@ -54,6 +83,7 @@ export default class EventScreen extends Component {
         openContactsScreen={() => this.openContactsScreen()}
         event={this.state.event}
         contacts={this.state.contacts}
+        shuffleUsers={this.shuffleUsers}
       />
     );
   }

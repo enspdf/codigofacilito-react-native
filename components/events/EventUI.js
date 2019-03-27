@@ -1,11 +1,11 @@
 import React from "react";
 import { View, FlatList } from "react-native";
 import { Button, Title, Paragraph } from "react-native-paper";
-import ContactCard from "../contacts/ContactCard";
+import SecretContactCard from "../contacts/SecretContactCard";
 
 export default props => {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Title>{props.event.title}</Title>
       <Paragraph>{new Date(props.event.date).toLocaleDateString()}</Paragraph>
       <View>
@@ -19,7 +19,7 @@ export default props => {
       </View>
       <FlatList
         data={props.contacts}
-        renderItem={({ item }) => <ContactCard user={item} />}
+        renderItem={({ item }) => <SecretContactCard user={item} />}
       />
       <Button onPress={() => props.openContactsScreen()}>
         Agregar invitados
